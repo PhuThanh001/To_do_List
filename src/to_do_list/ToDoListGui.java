@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import java.io.File;
 import java.io.IOException;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +39,7 @@ public class ToDoListGui extends JFrame implements ActionListener   {
 	{
 		JLabel bannerLabel = new JLabel("To do List");
 		try {
-            // Tải font từ file
+            // download font from file
             File fontFile = new File("src/to_do_list/LEMONMILK-Light.otf"); 
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(36f);
             bannerLabel.setFont(customFont);
@@ -75,6 +76,7 @@ public class ToDoListGui extends JFrame implements ActionListener   {
 		//add Task Button
 		JButton addTaskButton = new JButton("Add Task");
 		addTaskButton.setFont(createFont("src/to_do_list/LEMONMILK-Light.otf", 18f ));
+		addTaskButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		addTaskButton.setBounds(-5,CommonConstants.GUI_SIZE.height - 88,
 				CommonConstants.ADDTASK_BUTTON_SIZE.width, CommonConstants.ADDTASK_BUTTON_SIZE.height);
 		addTaskButton.addActionListener(this);
@@ -113,6 +115,13 @@ public class ToDoListGui extends JFrame implements ActionListener   {
 			//create a TaskComponent 
 			TaskComponent taskComponent = new TaskComponent(taskComponentPanel);
 			taskComponentPanel.add(taskComponent);
+			
+			//make the previous task appear disable
+			if(taskComponentPanel.getComponentCount() > 1) {
+				TaskComponent previousTask = (TaskComponent) taskComponentPanel.getComponent(
+						taskComponentPanel.getComponentCount() - 2);
+				previousTask.getTaskField().setBackground(null);
+			}
 			
 			//make the task field request focus after creation
 			taskComponent.getTaskField().requestFocus();
